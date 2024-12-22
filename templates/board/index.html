@@ -8,12 +8,12 @@
 {% endblock %} 
 
 {% block content %}
-    {% for post in posts %}
+    {% for group in groups%}
         <article class="post">
             <header>
                 <div>
-                    <a class="action" href="{{ url_for('board.access', id=groups['id']) }}"><h1>{{ groups['title'] }}</h1></a> 
-                    <div class="about">created on {{ groups['created'].strftime('%Y-%m-%d') }}</div>
+                    <h1><a class="action" href="{{ url_for('board.create') }}">{{ group['title'] }}</a></h1>
+                    <div class="about">created by {{ group['author_id']}} {{ group['created'].strftime('%Y-%m-%d') }}</div>
                 </div>
             </header>
         </article>
