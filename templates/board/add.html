@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Add a User {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="userid">Userid</label>
+        <input name="userid" id="userid" required>
+        <input type="submit" value="Add User">
+    </form>
+{% endblock %}

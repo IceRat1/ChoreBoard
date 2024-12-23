@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}{{ group['title'] }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <h2> Your Chores </h2>
+    {% for chore in chores %}
+        <article class="post">
+            <header>
+                <div>
+                    <h1>{{ chore['title'] }}</h1>
+                    <div class="about">requested by {{ chore['username'] }} on {{ chore['created'].strftime('%Y-%m-%d') }}</div>
+                </div>
+            </header>
+        </article>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+
+    <h2> Members </h2>
+    {% for member in members %}
+        <article class="post">
+            <header>
+                <div>
+                    <h1>{{ member['username'] }}</h1>
+                </div>
+            </header>
+        </article>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+    
+    <br>
+    <a href="{{ url_for('board.add', id=group['id']) }}"><button>Add A User To Group</button></a>
+    <form action="{{ url_for('board.delete', id=group['id']) }}" method="post">
+        <input class="danger" type="submit" value="Delete Group" onclick="return confirm('Are you sure?');">
+    </form>
+{% endblock %}

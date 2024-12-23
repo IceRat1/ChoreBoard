@@ -12,8 +12,8 @@
         <article class="post">
             <header>
                 <div>
-                    <h1><a class="action" href="{{ url_for('board.create') }}">{{ group['title'] }}</a></h1>
-                    <div class="about">created by {{ group['author_id']}} {{ group['created'].strftime('%Y-%m-%d') }}</div>
+                    <h1><a class="action" href="{{ url_for('board.home', id=group['id']) }}">{{ group['title'] }}</a></h1>
+                    <div class="about">created by {{ group['username']}} {{ group['created'].strftime('%Y-%m-%d') }}</div>
                 </div>
             </header>
         </article>
