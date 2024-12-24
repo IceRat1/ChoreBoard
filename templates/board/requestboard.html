@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Request Board{% endblock %}</h1>
+    {% if g.user %}
+        <a class="action" href="{{ url_for('board.newrequest', id=id) }}">New Request</a>
+    {% endif %}
+{% endblock %} 
+
+{% block content %}
+    {% for request in requests%}
+        <article class="post">
+            <header>
+                <div>
+                    <h1>{{ request['title'] }}</h1>
+                    <div class="about">created by {{ request['username']}} {{ request['created'].strftime('%Y-%m-%d') }}</div>
+                </div>
+                {% if g.user['id'] == request['author_id'] %}
+                    <a class="action" href="{{ url_for('board.updaterequest', groupid=id, choreid=request['id']) }}">Edit</a>
+                {% else %}
+                    <a class="action" href="{{ url_for('board.acceptrequest', groupid=id, choreid=request['id']) }}">Accept</a>
+                {% endif %}
+            </header>
+        </article>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

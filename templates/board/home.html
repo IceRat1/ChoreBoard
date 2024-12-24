@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block content %}
+    <br>
+    <a href="{{ url_for('board.requestboard', id=group['id']) }}"><button>Request Board</button></a>
     <h2> Your Chores </h2>
     {% for chore in chores %}
         <article class="post">

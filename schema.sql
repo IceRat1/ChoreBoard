@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS user_groups;
+DROP TABLE IF EXISTS chores;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,18 +31,12 @@ CREATE TABLE chores (
     title TEXT NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     author_id INTEGER NOT NULL,
+    user_id INTEGER,
     group_id INTEGER NOT NULL,
-    reward INTEGER NOT NULL,
+    reward INTEGER NOT NULL DEFAULT 100,
     FOREIGN KEY (author_id) REFERENCES user (id),
+    FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (group_id) REFERENCES groups (id)
 );
-
-CREATE TABLE user_chores (
-    userid INTEGER NOT NULL,
-    choreid INTEGER NOT NULL,
-    PRIMARY KEY (userid, choreid),
-    FOREIGN KEY (userid) REFERENCES user (id),
-    FOREIGN KEY (choreid) REFERENCES chores (id)
-)
 
 

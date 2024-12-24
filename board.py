@@ -18,7 +18,7 @@ def index():
     groups = db.execute(
         'SELECT g.id, g.title, g.created, u.username FROM user_groups ug'
         ' JOIN groups g ON ug.groupid = g.id'
-        ' JOIN user u ON ug.userid = u.id'
+        ' JOIN user u ON g.author_id = u.id'
         ' WHERE ug.userid = ?',
         (g.user['id'],)
     ).fetchall()
@@ -85,10 +85,9 @@ def home(id):
     db = get_db()
     group = get_group(id)
     chores = db.execute(
-        'SELECT c.id, c.title, c.created, c.reward, u.username FROM user_chores uc'
-        ' JOIN chores c ON uc.choreid = c.id'
-        ' JOIN user u ON uc.userid = u.id'
-        ' WHERE u.id = ? AND c.group_id = ?',
+        'SELECT c.id, c.title, c.created, c.reward, u.username FROM chores c'
+        ' JOIN user u ON c.author_id = u.id'
+        ' WHERE c.user_id = ? AND c.group_id = ?',
         (g.user['id'], id)
     ).fetchall()
     members = db.execute(
@@ -140,3 +139,113 @@ def add(id):
     
     return render_template('board/add.html')
 
+@bp.route('/<int:id>/requestboard', methods=('GET', 'POST'))
+@login_required
+def requestboard(id):
+    db = get_db()
+    requests = db.execute(
+        'SELECT c.id, c.title, c.created, c.author_id, c.group_id, c.reward, u.username FROM chores c'
+        ' JOIN user u ON c.author_id = u.id'
+        ' WHERE c.user_id IS NULL AND c.group_id = ?',
+        (id,)
+    ).fetchall()
+    
+    return render_template('board/requestboard.html', id=id, requests=requests)
+
+@bp.route('/<int:id>/requestboard/new', methods=('GET', 'POST'))
+@login_required
+def newrequest(id):
+    if request.method == 'POST':
+        title = request.form['title']
+        reward = request.form['reward']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+        
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            if not reward:
+                db.execute(
+                'INSERT INTO chores (title, author_id, group_id)'
+                ' VALUES (?, ?, ?)',
+                (title, g.user['id'], id)
+                )
+            else:
+                db.execute(
+                'INSERT INTO chores (title, author_id, group_id, reward)'
+                ' VALUES (?, ?, ?, ?)',
+                (title, g.user['id'], id, reward)
+                )
+
+            db.commit()
+            return redirect(url_for('board.requestboard', id=id))
+    return render_template('board/addrequest.html')
+
+def get_chore(id):
+    db = get_db()
+    chore = db.execute(
+        'SELECT *'
+        ' FROM chores c'
+        ' WHERE c.id = ?',
+        (id,)
+    ).fetchone()
+
+    if chore is None:
+        abort(404, f"Chore id {id} doesn't exist.")
+    
+    return chore
+
+@bp.route('/<int:groupid>/requestboard/<int:choreid>/update', methods=('GET', 'POST'))
+@login_required
+def updaterequest(groupid, choreid):
+    chore = get_chore(choreid)
+    if request.method == 'POST':
+        title = request.form['title']
+        reward = request.form['reward']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+        
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            if not reward:
+                db.execute(
+                'UPDATE chores SET title = ?'
+                ' WHERE id = ?',
+                (title, choreid)
+                )
+            else:
+                db.execute(
+                'UPDATE chores SET title = ?, reward = ?'
+                ' WHERE id = ?',
+                (title, reward, choreid)
+                )
+
+            db.commit()
+            return redirect(url_for('board.requestboard', id=groupid))
+    return render_template('board/updaterequest.html', groupid=groupid, chore=chore)
+
+@bp.route('/<int:groupid>/requestboard/<int:choreid>/delete', methods=('POST',))
+@login_required
+def deleterequest(groupid, choreid):
+    get_chore(choreid)
+    db = get_db()
+    db.execute('DELETE FROM chores WHERE id = ?', (choreid,))
+    db.commit()
+    return redirect(url_for('board.requestboard', id=groupid))
+
+
+@bp.route('/<int:groupid>/requestboard/<int:choreid>/accept', methods=('GET','POST'))
+@login_required
+def acceptrequest(groupid, choreid):
+    get_chore(choreid)
+    db = get_db()
+    db.execute('UPDATE chores SET user_id = ? WHERE id = ?', (g.user['id'], choreid))
+    db.commit()
+    return redirect(url_for('board.requestboard', id=groupid))
