@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}New Reward{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="title">Title</label>
+        <input name="title" id="title" value="{{ request.form['title'] }}" required>
+        <label for="cost">Cost</label>
+        <input name="cost" id="cost" value="{{ request.form['cose'] }}">
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}

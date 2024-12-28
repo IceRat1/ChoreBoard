@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS user_groups;
 DROP TABLE IF EXISTS chores;
+DROP TABLE IF EXISTS rewards;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,5 +39,16 @@ CREATE TABLE chores (
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (group_id) REFERENCES groups (id)
 );
+
+CREATE TABLE rewards (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    author_id INTEGER NOT NULL,
+    group_id INTEGER NOT NULL,
+    cost INTEGER NOT NULL DEFAULT 100,
+    FOREIGN KEY (author_id) REFERENCES user (id),
+    FOREIGN KEY (group_id) REFERENCES groups (id)
+)
 
 

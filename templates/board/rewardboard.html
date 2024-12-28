@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}{{ group['title'] }}{% endblock %}</h1> 
+    <a class="action" href="{{ url_for('board.home', id=id) }}">Chore Board</a>
+    <a class="action" href="{{ url_for('board.requestboard', id=id) }}">Request Board</a>
+    <a class="action selected" href="{{ url_for('board.rewardboard', id=id) }}">Reward Board</a>
+{% endblock %} 
+
+{% block content %}
+    <br>
+    <header>
+        <div><h2> Reward Board </h2> </div>
+        <a class="button" href="{{ url_for('board.newreward', id=id) }}"><button>Add Reward</button></a>
+    </header>
+
+    <h3>Your current score: {{ score }} </h3>
+
+
+    {% for reward in rewards%}
+        <article class="chore">
+            <header>
+                <div>
+                    <h1>{{ reward['title'] }}</h1>
+                    <div class="about">created by {{ reward['username']}} {{ reward['created'].strftime('%Y-%m-%d') }}</div>
+                    <div class="score">Costs {{ reward['cost']}} score</div>
+                </div>
+                {% if g.user['id'] == reward['author_id'] %}
+                    <a class="action" href="{{ url_for('board.updatereward', groupid=id, rewardid=reward['id']) }}">Edit</a>
+                {% else %}
+                    <a class="action" href="{{ url_for('board.buyreward', groupid=id, rewardid=reward['id']) }}">Buy</a>
+                {% endif %}
+            </header>
+        </article>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

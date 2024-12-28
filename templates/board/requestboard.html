@@ -1,19 +1,25 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Request Board{% endblock %}</h1>
-    {% if g.user %}
-        <a class="action" href="{{ url_for('board.newrequest', id=id) }}">New Request</a>
-    {% endif %}
+    <h1>{% block title %}{{ group['title'] }}{% endblock %}</h1>
+    <a class="action" href="{{ url_for('board.home', id=id) }}">Chore Board</a>
+    <a class="action selected" href="{{ url_for('board.requestboard', id=id) }}">Request Board</a>
+    <a class="action" href="{{ url_for('board.rewardboard', id=id) }}">Reward Board</a>
 {% endblock %} 
 
 {% block content %}
+    <br>
+    <header>
+        <div><h2> Request Board </h2></div>
+        <a class="button" href="{{ url_for('board.newrequest', id=id) }}"><button>Add Request</button></a>
+    </header>
     {% for request in requests%}
-        <article class="post">
+        <article class="chore">
             <header>
                 <div>
                     <h1>{{ request['title'] }}</h1>
                     <div class="about">created by {{ request['username']}} {{ request['created'].strftime('%Y-%m-%d') }}</div>
+                    <div class="score">{{ request['reward']}} score</div>
                 </div>
                 {% if g.user['id'] == request['author_id'] %}
                     <a class="action" href="{{ url_for('board.updaterequest', groupid=id, choreid=request['id']) }}">Edit</a>

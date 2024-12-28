@@ -2,42 +2,44 @@
 
 {% block header %}
     <h1>{% block title %}{{ group['title'] }}{% endblock %}</h1>
+    <a class="action selected" href="{{ url_for('board.home', id=group['id']) }}">Chore Board</a>
+    <a class="action" href="{{ url_for('board.requestboard', id=group['id']) }}">Request Board</a>
+    <a class="action" href="{{ url_for('board.rewardboard', id=group['id']) }}">Reward Board</a>
 {% endblock %}
 
 {% block content %}
     <br>
-    <a href="{{ url_for('board.requestboard', id=group['id']) }}"><button>Request Board</button></a>
     <h2> Your Chores </h2>
     {% for chore in chores %}
-        <article class="post">
+        <article class="chore">
             <header>
                 <div>
                     <h1>{{ chore['title'] }}</h1>
                     <div class="about">requested by {{ chore['username'] }} on {{ chore['created'].strftime('%Y-%m-%d') }}</div>
                 </div>
+                <a class="action" href="{{ url_for('board.complete', groupid=group['id'], choreid=chore['id']) }}">Mark as Complete</a>
             </header>
         </article>
-        {% if not loop.last %}
-            <hr>
-        {% endif %}
     {% endfor %}
-
-    <h2> Members </h2>
+    
+    <hr>
+    
+    <header>
+        <div><h2> Members </h2></div>
+        <a class="button" href="{{ url_for('board.add', id=group['id']) }}"><button>Add A User To Group</button></a>
+    </header>
     {% for member in members %}
-        <article class="post">
+        <article class="member">
             <header>
                 <div>
                     <h1>{{ member['username'] }}</h1>
+                    <div class="score">Score: {{ member['score'] }}</div>
                 </div>
             </header>
         </article>
-        {% if not loop.last %}
-            <hr>
-        {% endif %}
     {% endfor %}
     
     <br>
-    <a href="{{ url_for('board.add', id=group['id']) }}"><button>Add A User To Group</button></a>
     <form action="{{ url_for('board.delete', id=group['id']) }}" method="post">
         <input class="danger" type="submit" value="Delete Group" onclick="return confirm('Are you sure?');">
     </form>

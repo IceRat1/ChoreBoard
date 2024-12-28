@@ -1,26 +1,124 @@
-html { font-family: sans-serif; background: #eee; padding: 1rem; }
-body { max-width: 960px; margin: 0 auto; background: white; }
-h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
-a { color: #377ba8; }
-hr { border: none; border-top: 1px solid lightgray; }
-nav { background: lightgray; display: flex; align-items: center; padding: 0 0.5rem; }
-nav h1 { flex: auto; margin: 0; }
-nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
-nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
-nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
-.content { padding: 0 1rem 1rem; }
-.content > header { border-bottom: 1px solid lightgray; display: flex; align-items: flex-end; }
-.content > header h1 { flex: auto; margin: 1rem 0 0.25rem 0; }
-.flash { margin: 1em 0; padding: 1em; background: #cae6f6; border: 1px solid #377ba8; }
-.post > header { display: flex; align-items: flex-end; font-size: 0.85em; }
-.post > header > div:first-of-type { flex: auto; }
-.post > header h1 { font-size: 1.5em; margin-bottom: 0; }
-.post .about { color: slategray; font-style: italic; }
-.post .body { white-space: pre-line; }
-.content:last-child { margin-bottom: 0; }
+body{
+    background-color: rgb(255, 255, 255);
+    color:#555;
+    font-family: "Poppins", "Tahoma";
+    line-height: 1.6em;
+    margin:0;
+    border:0;
+}
+
+a:visited{
+    color: blue;
+}
+
+a:hover{
+    color: red;
+}
+
+hr{
+    margin: 30px 0;
+    border:none;
+    border-top: 1px solid lightgray;
+}
+
+#main-header{
+    background-color: coral;
+    color:#fff;
+    padding:0;
+    margin:0;
+    border-bottom: 5px solid rgb(47, 47, 47);
+    display:flex;
+    height: 100px;
+}
+
+#main-header h1{
+    color: black;
+    font-weight: 600;
+    flex:auto;
+    line-height: 100px;
+    margin:0;
+    padding-left: 20px;
+} 
+
+#main-header ul{
+    list-style:none;
+    padding:0;
+    display:flex;
+    align-items: flex-end;
+}
+
+#main-header li{
+    display: block;
+}
+
+#main-header a, span{
+    color:black;
+    text-decoration: none;
+    font-size:18px;
+    padding-right: 15px;
+}
+
+#main-header img{
+    width:80px;
+    height: 80px;
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+#sub-header {
+    border-bottom: 1px solid lightgray;
+}
+
+#sub-header .action{
+    padding-left: 100px;
+    font-size:18px;
+    font-weight: 500;
+    padding-bottom: 10px;
+    text-decoration: none;
+}
+
+#sub-header .selected{
+    color:red;
+}
+
+.content header h1 { 
+    flex: auto; 
+    margin: 1em 0 0.5em 0;
+    color: rgb(233, 94, 44);
+}
+
 .content form { margin: 1em 0; display: flex; flex-direction: column; }
-.content label { font-weight: bold; margin-bottom: 0.5em; }
+.content label { font-weight: 500; margin-bottom: 0.5em; }
 .content input, .content textarea { margin-bottom: 1em; }
 .content textarea { min-height: 12em; resize: vertical; }
+.content h2 { padding:10px 20px; margin:0; font-weight: 700;}
+.content h3 {font-weight: 400; padding-left: 20px; margin: 5px 0;}
+.content .button {padding: 10px 0; align-items: flex-end;}
+.content button {font-family: "Poppins";}
+.content { padding: 0 3rem 3rem; }
+.content header { 
+    display: flex; 
+    align-items: flex-end; 
+}
+.content header > div:first-of-type { flex: auto; }
 input.danger { color: #cc2f2e; }
-input[type=submit] { align-self: start; min-width: 10em; }
+input[type=submit] { align-self: start; min-width: 10em; font-family: "Poppins"; }
+
+.group > header { display: flex; align-items: flex-end; font-size: 0.85em; padding:0 20px;}
+.group > header > div:first-of-type { flex: auto; }
+.group > header h1 { font-size: 1.5em; margin-bottom: 0; border:0;}
+.group > header a {text-decoration: none;}
+.group .about { color: slategray; font-style: italic; }
+
+.chore > header { display: flex; align-items: flex-end; font-size: 0.85em; padding:0 20px;}
+.chore > header > div:first-of-type { flex: auto; }
+.chore > header h1 { font-size: 1.5em; margin-bottom: 0; border:0;}
+.chore > header a {text-decoration: none; padding-bottom: 20px}
+.chore .about { color: slategray; font-style: italic; }
+.chore .score { color: slategray; }
+
+.member > header { display: flex; align-items: flex-end; font-size: 0.85em; padding:0 20px;}
+.member > header > div:first-of-type { flex: auto; }
+.member > header h1 { font-size: 1.5em; margin-bottom: 0; border:0;}
+.member > header a {text-decoration: none; padding-bottom: 20px}
+.member header .score { color: slategray; }
